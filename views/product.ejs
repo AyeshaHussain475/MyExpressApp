@@ -1,0 +1,89 @@
+<!-- views/createProduct.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Product</title>
+    <style>
+      /* Your CSS styles here */
+    </style>
+  </head>
+  <body>
+    <form id="createProductForm">
+      <h1>Create Product</h1>
+      <label for="productName">Name:</label>
+      <input type="text" id="productName" name="productName" required />
+      <br />
+      <label for="productPrice">Price:</label>
+      <input
+        type="number"
+        id="productPrice"
+        name="productPrice"
+        step="0.01"
+        required
+      />
+      <br />
+      <label for="productType">Type:</label>
+      <input type="text" id="productType" name="productType" required />
+      <br />
+      <label for="productQuantity">Quantity:</label>
+      <input
+        type="number"
+        id="productQuantity"
+        name="productQuantity"
+        required
+      />
+      <br />
+      <button type="button" onclick="submitForm()">Create Product</button>
+    </form>
+
+    <!-- Display error message -->
+    <div id="errorMessage" style="color: red; display: none"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      async function submitForm() {
+        const productName = document.getElementById("productName").value;
+        const productPrice = parseFloat(
+          document.getElementById("productPrice").value
+        );
+        const productType = document.getElementById("productType").value;
+        const productQuantity = parseInt(
+          document.getElementById("productQuantity").value
+        );
+
+        try {
+          const response = await axios.post(
+            "http://localhost:2000/api/createProduct",
+            {
+              name: productName,
+              price: productPrice,
+              type: productType,
+              quantity: productQuantity,
+              imageUrl: "",
+            }
+          );
+
+          if (response.status === 200) {
+            console.log(response);
+            const data = response.data;
+            console.log("Product created successfully:", data);
+            window.location.href = "/home";
+          } else {
+            console.error("Error during product creation:", response.data);
+            document.getElementById("errorMessage").innerText =
+              "Error during product creation. Please try again.";
+            document.getElementById("errorMessage").style.display = "block";
+          }
+        } catch (error) {
+          console.error("Error during product creation:", error);
+          document.getElementById("errorMessage").innerText =
+            "Error during product creation. Please try again.";
+          document.getElementById("errorMessage").style.display = "block";
+        }
+      }
+    </script>
+  </body>
+</html>

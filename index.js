@@ -32,6 +32,14 @@ app.get("/signup", (req, res) => {
   return res.render("signup");
 });
 
+app.get("/createP", (req, res) => {
+  return res.render("product");
+});
+
+app.get("/dashboard", (req, res) => {
+  return res.render("dashboard");
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on PORT ${process.env.PORT}`);
 });
